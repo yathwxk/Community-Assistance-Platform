@@ -142,32 +142,6 @@ The application will automatically create these tables:
 - `assignments` - Request assignments
 - `reviews` - User reviews and ratings
 
-## 🔒 Security Best Practices
-
-1. **Use dedicated database user** (not root)
-2. **Set strong passwords**
-3. **Limit user privileges** to specific database
-4. **Enable SSL** for production
-5. **Regular backups**
-
-## 🚀 Production Considerations
-
-### Performance Tuning
-```sql
--- Optimize for InnoDB
-SET GLOBAL innodb_buffer_pool_size = 1G;
-SET GLOBAL max_connections = 200;
-```
-
-### Backup Strategy
-```bash
-# Create backup
-mysqldump -u root -p neighborhood_help_desk > backup.sql
-
-# Restore backup
-mysql -u root -p neighborhood_help_desk < backup.sql
-```
-
 ## 📞 Support
 
 If you encounter MySQL-specific issues:
