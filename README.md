@@ -56,7 +56,6 @@ Neighborhood Help Desk is a full-stack web application that connects community m
 - **Spring Boot 3.2.0** - Enterprise-grade framework
 - **Spring Security** - Authentication and authorization
 - **Spring Data JPA** - Database abstraction layer
-- **Hibernate** - ORM for database operations
 - **Maven** - Dependency management and build tool
 
 ### **Database**
