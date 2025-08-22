@@ -1,4 +1,4 @@
-# 🏘️ Neighborhood Help Desk
+# 🏘️ Neighbourhood Help Desk: A Community Assistance Platform
 
 <div align="center">
 
@@ -241,76 +241,11 @@ curl http://localhost:8080/api/requests
 curl http://localhost:8080/api/community/members
 ```
 
-## 🚀 **Deployment Options**
-
-### **Local Development**
-```bash
-mvn spring-boot:run
-```
-
-### **Production JAR**
-```bash
-mvn clean package -DskipTests
-java -jar target/neighborhood-help-desk-1.0.0.jar
-```
-
-### **Docker Production**
-```bash
-docker-compose -f docker-compose.prod.yml up -d
-```
-
-### **Cloud Deployment**
-- **Heroku**: Use `Procfile` and Heroku MySQL addon
-- **AWS**: Deploy on EC2 with RDS MySQL
-- **Google Cloud**: Use Cloud Run with Cloud SQL
-- **Azure**: Deploy on App Service with Azure Database
-
-## 🤝 **Contributing**
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### **Quick Start for Contributors**
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes
-4. Test thoroughly
-5. Commit: `git commit -m 'Add amazing feature'`
-6. Push: `git push origin feature/amazing-feature`
-7. Open a Pull Request
-
-### **Development Guidelines**
-- Follow Java coding conventions
-- Write meaningful commit messages
-- Add tests for new features
-- Update documentation
-- Ensure responsive design
-
-## 📊 **Project Status**
-
-![GitHub issues](https://img.shields.io/github/issues/yourusername/neighborhood-help-desk)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/yourusername/neighborhood-help-desk)
-![GitHub stars](https://img.shields.io/github/stars/yourusername/neighborhood-help-desk)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/neighborhood-help-desk)
 
 ## 📄 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 **Acknowledgments**
-
-- Spring Boot team for the excellent framework
-- MySQL team for the reliable database
-- All contributors who help improve this project
-- The open-source community for inspiration and tools
-
-## 📞 **Support**
-
-- 🐛 **Bug Reports**: [Create an issue](https://github.com/yourusername/neighborhood-help-desk/issues/new?template=bug_report.md)
-- 💡 **Feature Requests**: [Create an issue](https://github.com/yourusername/neighborhood-help-desk/issues/new?template=feature_request.md)
-- 💬 **Questions**: [Start a discussion](https://github.com/yourusername/neighborhood-help-desk/discussions)
-- 📧 **Email**: your-email@example.com
-
----
 
 <div align="center">
 
