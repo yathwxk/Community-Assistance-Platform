@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Request - Neighborhood Help Desk</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">🏘️ Neighborhood Help Desk</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">All Requests</a>
+                <a href="post_request.html" class="nav-link">Post Request</a>
+                <a href="community.html" class="nav-link">Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="form-main">
+        <div class="container">
+            <div class="form-container">
+                <div class="form-header">
+                    <h1>Post a Help Request</h1>
+                    <p>Let your neighbors know how they can help you.</p>
+                </div>
+
+                <div id="error-message" class="error-message" style="display: none;"></div>
+                <div id="success-message" class="success-message" style="display: none;"></div>
+
+                <form id="request-form" class="request-form">
+                    <div class="form-group">
+                        <label for="title">Request Title *</label>
+                        <input type="text" id="title" name="title" required 
+                               placeholder="e.g., Need a ladder for 2 hours">
+                        <small>Be specific and clear about what you need</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <textarea id="description" name="description" required rows="4"
+                                  placeholder="Provide more details about your request, when you need it, and any specific requirements..."></textarea>
+                        <small>Include timing, location details, and any special requirements</small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Category *</label>
+                            <select id="category" name="category" required>
+                                <option value="">Select a category</option>
+                                <option value="TOOLS">🔧 Tools & Equipment</option>
+                                <option value="TUTORING">📚 Tutoring & Education</option>
+                                <option value="ERRANDS">🛒 Errands & Shopping</option>
+                                <option value="TRANSPORTATION">🚗 Transportation</option>
+                                <option value="HOUSEHOLD">🏠 Household Help</option>
+                                <option value="GARDENING">🌱 Gardening</option>
+                                <option value="TECHNOLOGY">💻 Technology Help</option>
+                                <option value="OTHER">📋 Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="urgency">Urgency *</label>
+                            <select id="urgency" name="urgency" required>
+                                <option value="">Select urgency</option>
+                                <option value="LOW">🟢 Low - No rush</option>
+                                <option value="MEDIUM">🟡 Medium - Within a few days</option>
+                                <option value="HIGH">🔴 High - Urgent, need soon</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="index.html" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Post Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // No authentication needed
+        });
+
+        document.getElementById('request-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const category = document.getElementById('category').value;
+            const urgency = document.getElementById('urgency').value;
+
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+
+            // Hide previous messages
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/requests', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: 1, // Default user ID for testing
+                        title,
+                        description,
+                        category,
+                        urgency
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    successDiv.textContent = 'Request posted successfully! Redirecting to home page...';
+                    successDiv.style.display = 'block';
+
+                    // Redirect to home page after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    errorDiv.textContent = data.error || 'Failed to post request';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Post request error:', error);
+                errorDiv.textContent = 'An error occurred. Please try again.';
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

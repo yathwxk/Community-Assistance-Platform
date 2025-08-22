@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Neighborhood Help Desk</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="dashboard.html" class="nav-logo">🏘️ Neighborhood Help Desk</a>
+            <div class="nav-links">
+                <span id="user-name" class="user-name"></span>
+                <a href="post_request.html" class="nav-link">Post Request</a>
+                <button onclick="logout()" class="btn btn-small">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard-main">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Welcome back, <span id="welcome-name"></span>!</h1>
+                <p>Your community dashboard</p>
+            </div>
+
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="showTab('available')">Available Requests</button>
+                <button class="tab-btn" onclick="showTab('my-requests')">My Requests</button>
+                <button class="tab-btn" onclick="showTab('my-assignments')">My Assignments</button>
+            </div>
+
+            <!-- Available Requests Tab -->
+            <div id="available-tab" class="tab-content active">
+                <div class="section-header">
+                    <h2>Available Help Requests</h2>
+                    <div class="filters">
+                        <select id="category-filter" onchange="filterRequests()">
+                            <option value="">All Categories</option>
+                            <option value="TOOLS">Tools & Equipment</option>
+                            <option value="TUTORING">Tutoring & Education</option>
+                            <option value="ERRANDS">Errands & Shopping</option>
+                            <option value="TRANSPORTATION">Transportation</option>
+                            <option value="HOUSEHOLD">Household Help</option>
+                            <option value="GARDENING">Gardening</option>
+                            <option value="TECHNOLOGY">Technology Help</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                        <select id="urgency-filter" onchange="filterRequests()">
+                            <option value="">All Urgency</option>
+                            <option value="LOW">Low</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="HIGH">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="available-requests" class="requests-grid">
+                    <!-- Available requests will be loaded here -->
+                </div>
+            </div>
+
+            <!-- My Requests Tab -->
+            <div id="my-requests-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>My Posted Requests</h2>
+                    <a href="post_request.html" class="btn btn-primary">Post New Request</a>
+                </div>
+                <div id="my-requests" class="requests-grid">
+                    <!-- User's requests will be loaded here -->
+                </div>
+            </div>
+
+            <!-- My Assignments Tab -->
+            <div id="my-assignments-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>My Volunteer Assignments</h2>
+                </div>
+                <div id="my-assignments" class="requests-grid">
+                    <!-- User's assignments will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Review Modal -->
+    <div id="review-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Rate Your Experience</h3>
+                <span class="close" onclick="closeReviewModal()">&times;</span>
+            </div>
+            <form id="review-form">
+                <div class="form-group">
+                    <label>Rating:</label>
+                    <div class="star-rating">
+                        <span class="star" data-rating="1">★</span>
+                        <span class="star" data-rating="2">★</span>
+                        <span class="star" data-rating="3">★</span>
+                        <span class="star" data-rating="4">★</span>
+                        <span class="star" data-rating="5">★</span>
+                    </div>
+                    <input type="hidden" id="rating-value" name="rating" required>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Comment (optional):</label>
+                    <textarea id="comment" name="comment" rows="3"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeReviewModal()" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

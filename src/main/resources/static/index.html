@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neighborhood Help Desk</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-logo">🏘️ Neighborhood Help Desk</h1>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">All Requests</a>
+                <a href="post_request.html" class="nav-link">Post Request</a>
+                <a href="community.html" class="nav-link">Community</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Your Community Help Network</h1>
+                <p>Connect with neighbors, share resources, and build a stronger community together.</p>
+                <div class="hero-buttons">
+                    <a href="post_request.html" class="btn btn-primary">Post a Request</a>
+                    <a href="#requests" class="btn btn-secondary">View Requests</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>How It Works</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <h3>Post Requests</h3>
+                        <p>Need help with something? Post a request and let your neighbors know what you need.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤝</div>
+                        <h3>Volunteer to Help</h3>
+                        <p>Browse requests from neighbors and volunteer to help with tasks you can handle.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⭐</div>
+                        <h3>Build Trust</h3>
+                        <p>Rate and review helpers to build a trusted community network.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-requests">0</div>
+                        <div class="stat-label">Total Requests</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="open-requests">0</div>
+                        <div class="stat-label">Open Requests</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="completed-requests">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="active-helpers">0</div>
+                        <div class="stat-label">Active Helpers</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="recent-requests" id="requests">
+            <div class="container">
+                <div class="section-header">
+                    <h2>All Help Requests</h2>
+                    <div class="search-and-filters">
+                        <div class="search-box">
+                            <input type="text" id="search-input" placeholder="🔍 Search requests..." onkeyup="handleSearch(event)">
+                            <button onclick="clearSearch()" class="btn btn-small">Clear</button>
+                        </div>
+                        <div class="filters">
+                            <select id="category-filter" onchange="filterRequests()">
+                                <option value="">All Categories</option>
+                                <option value="TOOLS">🔧 Tools & Equipment</option>
+                                <option value="TUTORING">📚 Tutoring & Education</option>
+                                <option value="ERRANDS">🛒 Errands & Shopping</option>
+                                <option value="TRANSPORTATION">🚗 Transportation</option>
+                                <option value="HOUSEHOLD">🏠 Household Help</option>
+                                <option value="GARDENING">🌱 Gardening</option>
+                                <option value="TECHNOLOGY">💻 Technology Help</option>
+                                <option value="OTHER">📋 Other</option>
+                            </select>
+                            <select id="urgency-filter" onchange="filterRequests()">
+                                <option value="">All Urgency</option>
+                                <option value="LOW">🟢 Low</option>
+                                <option value="MEDIUM">🟡 Medium</option>
+                                <option value="HIGH">🔴 High</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="requests-container" class="requests-grid">
+                    <!-- Requests will be loaded here -->
+                </div>
+                <div class="text-center">
+                    <a href="post_request.html" class="btn btn-primary">Post Your Own Request</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container">
+        <button class="fab" onclick="toggleFabMenu()">+</button>
+        <div class="fab-menu" id="fab-menu" style="display: none;">
+            <a href="post_request.html" class="fab-item">
+                <span class="fab-icon">📝</span>
+                <span class="fab-label">Post Request</span>
+            </a>
+            <a href="community.html" class="fab-item">
+                <span class="fab-icon">🏘️</span>
+                <span class="fab-label">Community</span>
+            </a>
+            <button class="fab-item" onclick="scrollToTop()">
+                <span class="fab-icon">⬆️</span>
+                <span class="fab-label">Scroll to Top</span>
+            </button>
+            <button class="fab-item" onclick="refreshRequests()">
+                <span class="fab-icon">🔄</span>
+                <span class="fab-label">Refresh</span>
+            </button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Neighborhood Help Desk. Building stronger communities together.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        // Load all requests on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllRequests();
+        });
+
+        async function loadAllRequests() {
+            try {
+                const category = document.getElementById('category-filter').value;
+                const urgency = document.getElementById('urgency-filter').value;
+                const search = document.getElementById('search-input').value;
+
+                let url = '/api/requests';
+                const params = new URLSearchParams();
+
+                if (category) params.append('category', category);
+                if (urgency) params.append('urgency', urgency);
+                if (search) params.append('search', search);
+
+                if (params.toString()) {
+                    url += '?' + params.toString();
+                }
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.requests && data.requests.length > 0) {
+                    const container = document.getElementById('requests-container');
+                    container.innerHTML = '';
+
+                    data.requests.forEach(request => {
+                        const requestCard = createEnhancedRequestCard(request);
+                        container.appendChild(requestCard);
+                    });
+
+                    // Update stats
+                    updateStats(data.requests);
+                } else {
+                    document.getElementById('requests-container').innerHTML =
+                        '<p class="no-requests">No requests found matching your criteria.</p>';
+
+                    // Reset stats if no requests
+                    updateStats([]);
+                }
+            } catch (error) {
+                console.error('Error loading requests:', error);
+                document.getElementById('requests-container').innerHTML =
+                    '<p class="error">Unable to load requests. Please try again later.</p>';
+            }
+        }
+
+        // Filter requests
+        function filterRequests() {
+            loadAllRequests();
+        }
+
+        // Handle search with debounce
+        let searchTimeout;
+        function handleSearch(event) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                loadAllRequests();
+            }, 500); // Wait 500ms after user stops typing
+        }
+
+        // Clear search
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            loadAllRequests();
+        }
+
+        // Enhanced request card with more actions
+        function createEnhancedRequestCard(request) {
+            const card = document.createElement('div');
+            card.className = 'request-card';
+
+            const canAccept = request.status === 'OPEN';
+            const canEdit = request.status === 'OPEN';
+            const canDelete = request.status === 'OPEN';
+
+            card.innerHTML = `
+                <div class="request-header">
+                    <div>
+                        <h3 class="request-title">${request.title}</h3>
+                        <div class="request-meta">
+                            <span class="status-badge status-${request.status.toLowerCase()}">${formatStatus(request.status)}</span>
+                            <span class="urgency-badge urgency-${request.urgency.toLowerCase()}">${formatUrgency(request.urgency)}</span>
+                        </div>
+                    </div>
+                    <div class="request-actions-menu">
+                        <button class="menu-btn" onclick="toggleMenu(${request.id})">⋮</button>
+                        <div id="menu-${request.id}" class="dropdown-menu" style="display: none;">
+                            ${canEdit ? `<button onclick="editRequest(${request.id})" class="menu-item">✏️ Edit</button>` : ''}
+                            ${canDelete ? `<button onclick="deleteRequest(${request.id})" class="menu-item delete">🗑️ Delete</button>` : ''}
+                            <button onclick="shareRequest(${request.id})" class="menu-item">📤 Share</button>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="request-description">${request.description}</p>
+
+                <div class="request-meta">
+                    <span>${formatCategory(request.category)}</span>
+                    <span>Posted by: ${request.user.name}</span>
+                    <span>Rating: ⭐ ${request.user.rating.toFixed(1)}</span>
+                </div>
+
+                <div class="request-meta">
+                    <span>Posted: ${formatDate(request.createdAt)}</span>
+                </div>
+
+                ${canAccept ? `
+                    <div class="request-actions">
+                        <button class="btn btn-primary" onclick="acceptRequest(${request.id})">
+                            🤝 Accept Request
+                        </button>
+                        <button class="btn btn-secondary" onclick="contactPoster(${request.id})">
+                            💬 Contact
+                        </button>
+                    </div>
+                ` : ''}
+            `;
+
+            return card;
+        }
+
+        // Toggle dropdown menu
+        function toggleMenu(requestId) {
+            const menu = document.getElementById(`menu-${requestId}`);
+            const isVisible = menu.style.display !== 'none';
+
+            // Hide all other menus
+            document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display = 'none');
+
+            // Toggle current menu
+            menu.style.display = isVisible ? 'none' : 'block';
+        }
+
+        // Delete request
+        async function deleteRequest(requestId) {
+            if (!confirm('Are you sure you want to delete this request? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/requests/${requestId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Request deleted successfully!');
+                    loadAllRequests(); // Refresh the list
+                } else {
+                    alert(data.error || 'Failed to delete request');
+                }
+            } catch (error) {
+                console.error('Delete request error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+        // Edit request (opens a simple prompt for now)
+        async function editRequest(requestId) {
+            const newTitle = prompt('Enter new title:');
+            if (!newTitle) return;
+
+            const newDescription = prompt('Enter new description:');
+            if (!newDescription) return;
+
+            try {
+                const response = await fetch(`/api/requests/${requestId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title: newTitle,
+                        description: newDescription
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert('Request updated successfully!');
+                    loadAllRequests(); // Refresh the list
+                } else {
+                    alert(data.error || 'Failed to update request');
+                }
+            } catch (error) {
+                console.error('Update request error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+        // Share request
+        function shareRequest(requestId) {
+            const url = `${window.location.origin}/?highlight=${requestId}`;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Request link copied to clipboard!');
+            }).catch(() => {
+                prompt('Copy this link to share:', url);
+            });
+        }
+
+        // Contact poster (placeholder)
+        function contactPoster(requestId) {
+            alert('Contact feature coming soon! For now, you can accept the request to get in touch.');
+        }
+
+        // Update statistics
+        function updateStats(requests) {
+            const totalRequests = requests.length;
+            const openRequests = requests.filter(r => r.status === 'OPEN').length;
+            const completedRequests = requests.filter(r => r.status === 'COMPLETED').length;
+            const uniqueHelpers = new Set(requests.map(r => r.user.id)).size;
+
+            document.getElementById('total-requests').textContent = totalRequests;
+            document.getElementById('open-requests').textContent = openRequests;
+            document.getElementById('completed-requests').textContent = completedRequests;
+            document.getElementById('active-helpers').textContent = uniqueHelpers;
+        }
+
+        // Floating Action Button functions
+        function toggleFabMenu() {
+            const menu = document.getElementById('fab-menu');
+            const isVisible = menu.style.display !== 'none';
+            menu.style.display = isVisible ? 'none' : 'block';
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('fab-menu').style.display = 'none';
+        }
+
+        function refreshRequests() {
+            loadAllRequests();
+            document.getElementById('fab-menu').style.display = 'none';
+
+            // Show a brief loading indicator
+            const container = document.getElementById('requests-container');
+            container.innerHTML = '<p class="loading">🔄 Refreshing requests...</p>';
+        }
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.matches('.menu-btn')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
